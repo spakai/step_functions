@@ -14,7 +14,7 @@ resource "aws_sfn_state_machine" "example_state_machine" {
       }
       InvokeLambda = {
         Type     = "Task"
-        Resource = aws_lambda_function.example_lambda.arn
+        Resource = aws_lambda_function.task_processor.arn
         Parameters = {
           "taskId.$" = "States.Format('Task ID: {}', $.taskId)"
         }
@@ -24,9 +24,9 @@ resource "aws_sfn_state_machine" "example_state_machine" {
   })
 }
 
-resource "aws_lambda_function" "example_lambda" {
+resource "aws_lambda_function" "task_processor" {
   filename         = "./lambda_package.zip"
-  function_name    = "example_lambda"
+  function_name    = "process_overdue_tasks"
   role             = aws_iam_role.lambda_exec_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.9"
@@ -101,7 +101,7 @@ resource "aws_iam_policy" "step_functions_policy" {
       {
         Action = "lambda:InvokeFunction",
         Effect = "Allow",
-        Resource = aws_lambda_function.example_lambda.arn
+        Resource = aws_lambda_function.task_processor.arn
       }
     ]
   })
