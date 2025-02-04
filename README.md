@@ -53,7 +53,7 @@ This project contains Terraform configurations for setting up AWS Step Functions
 6. Start State Machine
    ```
     state_machine_arn="<state machine arn from output of terraform apply>"
- 1106  aws stepfunctions start-execution   --state-machine-arn "$state_machine_arn"   --input '{"taskId": "12345"}'
+   aws stepfunctions start-execution   --state-machine-arn "$state_machine_arn"   --input '{"taskId": "12345"}'
    ```
 7.  Check logs that show Task ID : 12345 processed successfully 
 
